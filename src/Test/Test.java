@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import dao.Image;
-import dao.Signature;
+import dao.Signatures;
 import services.SignatureRepository; 
 import util.HibernateUtil;
 

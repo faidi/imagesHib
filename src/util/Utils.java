@@ -10,7 +10,7 @@ import com.projet.outiles.StaticValues;
 import com.projet.outiles.Utiles;
 
 import dao.SignaturNorm;
-import dao.Signature;
+import dao.Signatures;
 
 public class Utils {
 
@@ -18,7 +18,7 @@ public class Utils {
 	private int by;
 	private int wb;
 
-	public static Signature calculerSignature(File img) {
+	public static Signatures calculerSignature(File img) {
 		int[] tabRg = new int[8];
 		int[] tabBy = new int[16];
 		int[] tabWb = new int[16];
@@ -26,7 +26,7 @@ public class Utils {
 		int rg = 0;
 		int by = 0;
 		int wb = 0;
-		Signature sig;
+		Signatures sig;
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(img);
@@ -60,7 +60,7 @@ public class Utils {
 			}
 
 		}
-		sig = new Signature(tabRg, tabBy, tabWb);
+		sig = new Signatures(tabRg, tabBy, tabWb);
 		return sig;
 	}
 
@@ -87,14 +87,14 @@ public class Utils {
 		this.wb = r + g + b;
 	}
 
-	public static float calculeSimilarité(Signature sig1, Signature sig2) {
+	public static float calculeSimilarité(Signatures sig1, Signatures sig2) {
 
 		return (Float) null;
 	}
 
 	// calcule de la distance eucludienne entre les deux valeurs
-	public static float calculerDistanceEuclidienne(Signature sig1,
-			Signature sig2) {
+	public static float calculerDistanceEuclidienne(Signatures sig1,
+			Signatures sig2) {
 		float chi2Res = 0;
 		float chi2ResRg = 0 ,chi2ResBy = 0,chi2ResWb = 0;
 		SignaturNorm sig1Norm;
@@ -151,7 +151,7 @@ public class Utils {
 		return soust;
 	}
 
-	private static SignaturNorm normaliser(Signature sig) {
+	private static SignaturNorm normaliser(Signatures sig) {
 		float[] newTabRG;
 		float[] newTabBY;
 		float[] newTabWB;
@@ -167,7 +167,7 @@ public class Utils {
 
 	}
 
-	private static float[] normaliserRg(Signature sig) {
+	private static float[] normaliserRg(Signatures sig) {
 		int tabRg[] = new int[8];
 		int somme = 0;
 		float[] tabByNormaliser = new float[16];
@@ -183,7 +183,7 @@ public class Utils {
 
 	}
 
-	private static float[] normaliserBy(Signature sig) {
+	private static float[] normaliserBy(Signatures sig) {
 		int tabBy[] = new int[16];
 		int somme = 0;
 		float[] tabByNormaliser = new float[16];
@@ -198,7 +198,7 @@ public class Utils {
 		return tabByNormaliser;
 	}
 
-	private static float[] normaliserWb(Signature sig) {
+	private static float[] normaliserWb(Signatures sig) {
 		int tabWB[] = new int[16];
 		int somme = 0;
 		float[] tabByNormaliser = new float[16];

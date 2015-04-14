@@ -7,11 +7,11 @@ import java.io.IOException;
 
 import org.hibernate.Session;
 
-import com.projet.outiles.ObjetImage;
+ 
 
 import util.HibernateUtil;
 import dao.Image;
-import dao.Signature;
+import dao.Signatures;
 
 public class ImageRepository {
 

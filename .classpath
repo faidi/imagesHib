@@ -15,5 +15,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="/Users/cash/Downloads/mysql-connector-java-5.1.18-bin.jar"/>
 	<classpathentry kind="lib" path="/Users/cash/Downloads/xdoclet-1.2.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Projet_IP9"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

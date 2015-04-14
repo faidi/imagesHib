@@ -27,7 +27,7 @@
         
         <property name="hbm2ddl.auto">update</property>
        <!-- mapping files -->
-        <mapping class="dao.Signature"/>
+        <mapping class="dao.Signatures"/>
          <mapping class="dao.Image"/>
     </session-factory>
     

@@ -9,7 +9,20 @@
 <title>Insert title here</title>
 </head>
 <body>
+<h3>Résultat trouvé par l'algorithme de calcule de la distance euclidienne</h3>
 	<c:forEach items="${images}" var="image">
+		<div class="news">
+			<div class="titreNews">
+				<c:out value="${image['name']}" />
+			</div>
+			<div class="corpsNews">
+			<img src="data:image/jpeg;base64,${image['image']}" width="200" height="200"> 	 
+			</div>
+			 
+		</div>
+		</c:forEach>
+		<h3>Résultat trouver l'algorithme d'intersection</h3> 
+		<c:forEach items="${images2}" var="image">
 		<div class="news">
 			<div class="titreNews">
 				<c:out value="${image['name']}" />

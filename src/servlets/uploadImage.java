@@ -25,14 +25,13 @@ import javax.servlet.http.Part;
  
 
 
-
-import com.projet.outiles.ObjetImage;
+ 
 import com.sun.tools.javac.code.Attribute.Array;
 
 import services.ImageRepository;
 import services.SignatureRepository;
 import dao.Image;
-import dao.Signature;
+import dao.Signatures;
 import util.Utils;
 
 /**
@@ -93,7 +92,7 @@ public class  uploadImage extends HttpServlet {
 			 */
 			 
  
-		 Signature sig=new Signature();
+		 Signatures sig=new Signatures();
 		  sig= Utils.calculerSignature(tmpFile);
 		  img.setSignature(sig);
 		  sig.setImage(img);

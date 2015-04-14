@@ -24,8 +24,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+ 
 
-import com.projet.outiles.ObjetImage;
+ 
+
+
+import com.projet.outiles.CalculeSimilariteSig;
+import com.projet.outiles.Signature;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import com.sun.tools.javac.code.Attribute.Array;
 
@@ -33,7 +38,7 @@ import services.ImageRepository;
 import services.ListToWeb;
 import services.SignatureRepository;
 import dao.Image;
-import dao.Signature;
+import dao.Signatures;
 import util.Utils;
 
 /**
@@ -50,7 +55,8 @@ public class RechercheImage extends HttpServlet {
 	File destinationDir = new File("/tmp");
 	ArrayList<Image> listImage=new ArrayList<Image>();
 	ArrayList<ListToWeb> ltw=new ArrayList<ListToWeb>();
-	Signature sig = new Signature();
+	ArrayList<ListToWeb> ltw2=new ArrayList<ListToWeb>();
+	Signatures sig = new Signatures();
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -92,14 +98,15 @@ public class RechercheImage extends HttpServlet {
 			Image img = new Image(readBytesFromFile(tmpFile), fileName);
 
 			sig = Utils.calculerSignature(tmpFile);
+			
 			float distance = 0;
-
-			Iterator<Signature> signatures = SignatureRepository
+			float distance2=0;	
+			Iterator<Signatures> signatures = SignatureRepository
 					.getAllSignatures().iterator();
 
 			while (signatures.hasNext()) {
 
-				Signature s = signatures.next();
+				Signatures s = signatures.next();
 				distance = Utils.calculerDistanceEuclidienne(sig, s);
 				System.out.println("la distance est de" + distance);
 				if (distance <=  5) {
@@ -116,6 +123,36 @@ public class RechercheImage extends HttpServlet {
 					  
 					ltw.add(imgToWeb);
 				}
+				
+				/*
+				Signature sigUploaded=new Signature(sig.getTabRG(),sig.getTabBY(),sig.getTabWB());
+				while (signatures.hasNext()) {
+
+					Signatures s2 = signatures.next();
+					Signature sigfromDB=new Signature(s2.getTabRG(),s2.getTabBY(),s2.getTabRG());
+				   
+					
+
+					 
+					
+					distance2=calculerDeSimilarite(sigUploaded,sigfromDB);
+					System.out.println("la distance est de" + distance);
+					if (distance2 <=  0.5 ) {
+
+	 
+					 
+
+								String encoded=Base64.encode(s.getImage().getFichier());
+								String encodedString = new String(encoded);
+
+								ListToWeb imgToWeb=new ListToWeb(s.getImage().getId(),s.getImage().getName(),encodedString);	
+					 
+						 
+						  
+						ltw2.add(imgToWeb);
+					}}			
+//
+				 */
 			}
 
 			/*
@@ -125,10 +162,13 @@ public class RechercheImage extends HttpServlet {
 			// request.getRequestDispatcher("/success.jsp").forward(request,
 			// response);
 			//
+			//request.setAttribute("images2", ltw2);
 			request.setAttribute("images", ltw);
 			RequestDispatcher requestDispatcher;
 			requestDispatcher = request.getRequestDispatcher("/result_search.jsp");
 			requestDispatcher.forward(request, response);
+			
+			
 		} catch (FileNotFoundException fne) {
 			writer.println("You either did not specify a file to upload or are "
 					+ "trying to upload a file to a protected or nonexistent "

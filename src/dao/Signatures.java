@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name ="signatures")
-public class Signature {
+public class Signatures {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,12 +40,12 @@ public class Signature {
 		this.image = image;
 	}
 
-	public Signature() {
+	public Signatures() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Signature(int[] tabRG, int[] tabBY, int[] tabWB) {
+	public Signatures(int[] tabRG, int[] tabBY, int[] tabWB) {
 		super();
 		this.tabRG = tabRG;
 		this.tabBY = tabBY;

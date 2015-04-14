@@ -32,13 +32,13 @@ public class Image {
 	
 	
 	@OneToOne(cascade=CascadeType.ALL,  mappedBy="image")
- 	private Signature signature;
+ 	private Signatures signature;
 
-	public Signature getSignature() {
+	public Signatures getSignature() {
 		return signature;
 	}
 
-	public void setSignature(Signature signature) {
+	public void setSignature(Signatures signature) {
 		
 		this.signature = signature;
 	}

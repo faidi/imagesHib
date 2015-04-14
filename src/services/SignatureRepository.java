@@ -6,13 +6,13 @@ import org.hibernate.Session;
 
  
 
-import dao.Signature;
+import dao.Signatures;
 import util.HibernateUtil;
 
 public class SignatureRepository {
 
 	
-	public static void addSignature(Signature sig){
+	public static void addSignature(Signatures sig){
 		
 		Session session=HibernateUtil.getSession();
 		session.beginTransaction();
@@ -20,21 +20,21 @@ public class SignatureRepository {
 		session.flush();
 		session.getTransaction().commit(); 
 	}
-	public static Signature getSignature(Long idS){
+	public static Signatures getSignature(Long idS){
 		Session session=HibernateUtil.getSession();
 		session.beginTransaction();
-		Signature p = (Signature) session.load(Signature.class, idS);
+		Signatures p = (Signatures) session.load(Signatures.class, idS);
 		return p;
 		
 	} 
 	
-	public static  List<Signature> getAllSignatures(){
+	public static  List<Signatures> getAllSignatures(){
 		
 		Session session=HibernateUtil.getSession();
 		session.beginTransaction();
 		 
 		
-		return session.createQuery("from Signature").list(); 
+		return session.createQuery("from Signatures").list(); 
 		
 		
 	}
