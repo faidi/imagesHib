@@ -1,16 +1,16 @@
 package services;
 
-public class ListToWeb {
+public class ImageForWeb {
 	private Long id;
 	private String name;
 	private String image;
-	public ListToWeb(Long id, String name, String image) {
+	public ImageForWeb(Long id, String name, String image) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.image = image;
 	}
-	public ListToWeb() {
+	public ImageForWeb() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

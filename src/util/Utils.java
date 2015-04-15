@@ -1,14 +1,20 @@
 package util;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import services.ImageForWeb;
+ 
+
 import com.projet.outiles.StaticValues;
 import com.projet.outiles.Utiles;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
+import dao.Image;
 import dao.SignaturNorm;
 import dao.Signatures;
 
@@ -67,7 +73,7 @@ public class Utils {
 	public static int deffinirIntervale(int intervaleTotale, int nbrDeDivision,
 			int nombre) {
 
-		Integer j = 0;
+		int j = 0;
 		int inter = intervaleTotale * 2 / nbrDeDivision;
 		for (int i = -intervaleTotale; i <= intervaleTotale; i += inter) {
 			if (nombre >= i && nombre <= i + inter) {
@@ -87,130 +93,77 @@ public class Utils {
 		this.wb = r + g + b;
 	}
 
-	public static float calculeSimilarité(Signatures sig1, Signatures sig2) {
-
-		return (Float) null;
-	}
-
 	// calcule de la distance eucludienne entre les deux valeurs
-	public static float calculerDistanceEuclidienne(Signatures sig1,
+	public static double calculerDistanceEuclidienne(Signatures sig1,
 			Signatures sig2) {
-		float chi2Res = 0;
-		float chi2ResRg = 0 ,chi2ResBy = 0,chi2ResWb = 0;
-		SignaturNorm sig1Norm;
-		SignaturNorm sig2Norm;
-		sig1Norm = normaliser(sig1);
-		sig2Norm = normaliser(sig2);
+		double chi2Res = 0;
+
+		SignaturNorm sig1N = normaliser(sig1);
+        
+		SignaturNorm sig2N = normaliser(sig2);
+		 
+
 		double resRg = 0, resBy = 0, resWb = 0;
 
-		chi2ResRg += calculerchiRg(sig1Norm, sig2Norm);
+		resRg = (Math.sqrt(soustPowSum(sig2N.getTabRG(), sig1N.getTabRG())));
 
-		chi2ResBy += calculerchiBy(sig1Norm, sig2Norm);
+		resBy = (Math.sqrt(soustPowSum(sig2N.getTabBY(), sig1N.getTabBY())));
 
-		chi2ResWb += calculerchiWb(sig1Norm, sig2Norm);
-
-		resRg = (Math.sqrt(chi2ResRg));
-		resBy = (Math.sqrt(chi2ResBy));
-
-		resWb = (Math.sqrt(chi2ResWb));
+		resWb = (Math.sqrt(soustPowSum(sig2N.getTabWB(), sig1N.getTabWB())));
 
 		chi2Res = (float) ((resRg + resBy + resWb) / 3);
 		return chi2Res;
 	}
 
-	public static float calculerchiRg(SignaturNorm sig1Norm,
-			SignaturNorm sig2Norm) {
+	private static double soustPowSum(double[] v1, double[] v2) {
+		double rs = 0;
+		for (int i = 0; i < v1.length; i++) rs = (float) Math.pow((v1[i] - v2[i]), 2);
+		return rs;
 
-		float soust = 0;
-		for (int i = 0; i < 8; i++) {
-			soust = (float) Math.pow(
-					sig1Norm.getTabRG()[i] - sig2Norm.getTabRG()[i], 2);
-		}
-		return soust;
-	}
-
-	public static float calculerchiBy(SignaturNorm sig1Norm,
-			SignaturNorm sig2Norm) {
-
-		float soust = 0;
-		for (int i = 0; i < 16; i++) {
-			soust = (float) Math.pow(
-					sig1Norm.getTabBY()[i] - sig2Norm.getTabBY()[i], 2);
-		}
-		return soust;
-	}
-
-	public static float calculerchiWb(SignaturNorm sig1Norm,
-			SignaturNorm sig2Norm) {
-
-		float soust = 0;
-		for (int i = 0; i < 16; i++) {
-			soust = (float) Math.pow(
-					sig1Norm.getTabWB()[i] - sig2Norm.getTabWB()[i], 2);
-		}
-		return soust;
 	}
 
 	private static SignaturNorm normaliser(Signatures sig) {
-		float[] newTabRG;
-		float[] newTabBY;
-		float[] newTabWB;
 		SignaturNorm sigNorm;
-
-		newTabRG = normaliserRg(sig);
-		newTabBY = normaliserBy(sig);
-		newTabWB = normaliserWb(sig);
-
-		sigNorm = new SignaturNorm(newTabRG, newTabBY, newTabWB);
+		sigNorm = new SignaturNorm(normaliserVecteur(sig.getTabRG()),
+				normaliserVecteur(sig.getTabBY()),
+				normaliserVecteur(sig.getTabWB()));
 
 		return sigNorm;
 
 	}
 
-	private static float[] normaliserRg(Signatures sig) {
-		int tabRg[] = new int[8];
-		int somme = 0;
-		float[] tabByNormaliser = new float[16];
-		float poid;
-		tabRg = sig.getTabRG();
-		for (int i = 0; i < tabRg.length; i++)
-			somme += tabRg[i];
+	private static double[] normaliserVecteur(int[] v) {
+		double[] vResult = new double[v.length];
+		for (int i = 0; i < v.length; i++){
+			vResult[i] = v[i] / LongeurVecteur(v);
+		}
+		return vResult; 
+	}
 
-		poid = somme / tabRg.length;
-		for (int i = 0; i < tabRg.length; i++)
-			tabByNormaliser[i] = (float) (tabRg[i] / poid);
-		return tabByNormaliser;
+	private static double LongeurVecteur(int[] v) {
+		double somme = 0;
+		for (int i = 0; i < v.length; i++)
+		{
+			somme += Math.pow( v[i],2);
+		
+		 
+		}
+		return (double) Math.sqrt(somme);
 
 	}
 
-	private static float[] normaliserBy(Signatures sig) {
-		int tabBy[] = new int[16];
-		int somme = 0;
-		float[] tabByNormaliser = new float[16];
-		float poid;
-		tabBy = sig.getTabBY();
-		for (int i = 0; i < tabBy.length; i++)
-			somme += tabBy[i];
+public static   ImageForWeb encodeForWeb(Image img){
+	
+	String encoded = Base64.encode(img.getFichier());
+	String encodedString = new String(encoded);
 
-		poid = somme / tabBy.length;
-		for (int i = 0; i < tabBy.length; i++)
-			tabByNormaliser[i] = (float) (tabBy[i] / poid);
-		return tabByNormaliser;
-	}
+	ImageForWeb imgToWeb = new ImageForWeb(img.getId(),  
+			img.getName(), encodedString);
 
-	private static float[] normaliserWb(Signatures sig) {
-		int tabWB[] = new int[16];
-		int somme = 0;
-		float[] tabByNormaliser = new float[16];
-		float poid;
-		tabWB = sig.getTabWB();
-		for (int i = 0; i < tabWB.length; i++)
-			somme += tabWB[i];
+	
+	return imgToWeb;
+	
+}
 
-		poid = somme / tabWB.length;
-		for (int i = 0; i < tabWB.length; i++)
-			tabByNormaliser[i] = (float) (tabWB[i] / poid);
-		return tabByNormaliser;
-	}
 
 }

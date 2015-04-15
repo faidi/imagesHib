@@ -24,18 +24,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
- 
 
- 
-
-
+import com.projet.controleur.Controleur;
 import com.projet.outiles.CalculeSimilariteSig;
 import com.projet.outiles.Signature;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import com.sun.tools.javac.code.Attribute.Array;
 
+import services.ImageForWeb;
 import services.ImageRepository;
-import services.ListToWeb;
+ 
 import services.SignatureRepository;
 import dao.Image;
 import dao.Signatures;
@@ -53,10 +51,10 @@ public class RechercheImage extends HttpServlet {
 	private final static Logger LOGGER = Logger.getLogger(RechercheImage.class
 			.getCanonicalName());
 	File destinationDir = new File("/tmp");
-	ArrayList<Image> listImage=new ArrayList<Image>();
-	ArrayList<ListToWeb> ltw=new ArrayList<ListToWeb>();
-	ArrayList<ListToWeb> ltw2=new ArrayList<ListToWeb>();
-	Signatures sig = new Signatures();
+	ArrayList<Image> listImage = new ArrayList<Image>();
+	ArrayList<ImageForWeb> ltw = new ArrayList<ImageForWeb>();
+	ArrayList<ImageForWeb> ltw2 = new ArrayList<ImageForWeb>();
+	Signatures sigUploaded = new Signatures();
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -97,62 +95,48 @@ public class RechercheImage extends HttpServlet {
 
 			Image img = new Image(readBytesFromFile(tmpFile), fileName);
 
-			sig = Utils.calculerSignature(tmpFile);
+			sigUploaded = Utils.calculerSignature(tmpFile);
 			
-			float distance = 0;
-			float distance2=0;	
+			double distance = 0;
+			float distance2 = 0;
 			Iterator<Signatures> signatures = SignatureRepository
 					.getAllSignatures().iterator();
 
 			while (signatures.hasNext()) {
 
-				Signatures s = signatures.next();
-				distance = Utils.calculerDistanceEuclidienne(sig, s);
-				System.out.println("la distance est de" + distance);
-				if (distance <=  5) {
-
- 
-				 
-
-							String encoded=Base64.encode(s.getImage().getFichier());
-							String encodedString = new String(encoded);
-
-							ListToWeb imgToWeb=new ListToWeb(s.getImage().getId(),s.getImage().getName(),encodedString);	
-				 
+				Signatures sigFromDB = signatures.next();
+				distance = (Utils.calculerDistanceEuclidienne(sigUploaded, sigFromDB))   ;
+				System.out.println(sigUploaded.toString());
+				System.out.println("la distance est de : " + distance);
+				if (distance <= 5) {
 					 
-					  
-					ltw.add(imgToWeb);
+					ltw.add(Utils.encodeForWeb(sigFromDB.getImage()) );
 				}
-				
-				/*
-				Signature sigUploaded=new Signature(sig.getTabRG(),sig.getTabBY(),sig.getTabWB());
-				while (signatures.hasNext()) {
-
-					Signatures s2 = signatures.next();
-					Signature sigfromDB=new Signature(s2.getTabRG(),s2.getTabBY(),s2.getTabRG());
+/*
+				  
+				   Signature sig2Uploaded=new Signature(sigUploaded.getTabRG(),sigUploaded.getTabBY(),sigUploaded.getTabWB());
+				   sig2Uploaded.affiche(); while (signatures.hasNext()) {
+				    
+				    Signatures s2 = signatures.next(); 
+				    Signature sig2fromDB=new  Signature(s2.getTabRG(),s2.getTabBY(),s2.getTabRG());
 				   
-					
-
-					 
-					
-					distance2=calculerDeSimilarite(sigUploaded,sigfromDB);
-					System.out.println("la distance est de" + distance);
-					if (distance2 <=  0.5 ) {
-
-	 
-					 
-
-								String encoded=Base64.encode(s.getImage().getFichier());
-								String encodedString = new String(encoded);
-
-								ListToWeb imgToWeb=new ListToWeb(s.getImage().getId(),s.getImage().getName(),encodedString);	
-					 
-						 
-						  
-						ltw2.add(imgToWeb);
-					}}			
-//
-				 */
+				   distance2=Controleur.calculerDeSimilarite(sig2Uploaded,
+				   sig2fromDB) ; System.out.println("la distance est de" +
+				   distance);
+				   if (distance2 <= 0.5 ) {
+				   
+				   
+				   String encoded=Base64.encode(s2.getImage().getFichier());
+				   String encodedString = new String(encoded);
+				   
+				   ListToWeb imgToWeb=new
+				   ListToWeb(s2.getImage().getId(),s2.getImage
+				   ().getName(),encodedString);
+				   
+				   
+				   
+				  // ltw2.add(imgToWeb); }} //
+				*/  
 			}
 
 			/*
@@ -162,13 +146,13 @@ public class RechercheImage extends HttpServlet {
 			// request.getRequestDispatcher("/success.jsp").forward(request,
 			// response);
 			//
-			//request.setAttribute("images2", ltw2);
+			// request.setAttribute("images2", ltw2);
 			request.setAttribute("images", ltw);
 			RequestDispatcher requestDispatcher;
-			requestDispatcher = request.getRequestDispatcher("/result_search.jsp");
+			requestDispatcher = request
+					.getRequestDispatcher("/result_search.jsp");
 			requestDispatcher.forward(request, response);
-			
-			
+
 		} catch (FileNotFoundException fne) {
 			writer.println("You either did not specify a file to upload or are "
 					+ "trying to upload a file to a protected or nonexistent "

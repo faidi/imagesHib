@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link type="text/css" rel="stylesheet" href= "/sources/bootstrap.css " /> 
 <title>Insert title here</title>
 </head>
 <body>
@@ -12,7 +13,7 @@
 <h1>Bienvenu dans l'application</h1>
 
 <hr>
-<a href="upload_image.jsp" > Ajouter une nouvelle image dans ma base de données</a> <br>
+<a class="btn btn-warning" href="upload_image.jsp" > Ajouter une nouvelle image dans ma base de données</a> <br>
 <a href="recherche.jsp" >Chercher des images</a> 
   
 </body>

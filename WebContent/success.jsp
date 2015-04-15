@@ -4,13 +4,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>Insert title here</title>
 </head>
 <body>
     
 <h2>Image enregistrée avec succès!!!  </h2>
 <h4>Que voulez vous faire maintenant?</h4>
-<a href="upload_image.jsp "> Ajouter une autre image à la base</a><br><hr>
+<a href="upload_image.jsp  "> Ajouter une autre image</a><br><hr>
 <a href="index.jsp">Acceuil</a>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.Arrays;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name ="signatures")
 public class Signatures {
+
+	
+
+	@Override
+	public String toString() {
+		return "Signatures [id=" + id + ", tabRG=" + Arrays.toString(tabRG)
+				+ ", tabBY=" + Arrays.toString(tabBY) + ", tabWB="
+				+ Arrays.toString(tabWB) + ", image=" + image + "]";
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
