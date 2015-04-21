@@ -3,7 +3,6 @@
 	<name>imagesHib</name>
 	<comment></comment>
 	<projects>
-		<project>Projet_IP9</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

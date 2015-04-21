@@ -94,49 +94,47 @@ public class RechercheImage extends HttpServlet {
 					new Object[] { fileName });
 
 			Image img = new Image(readBytesFromFile(tmpFile), fileName);
-
+			ImageForWeb imgW=Utils.encodeForWeb(img, 0);
 			sigUploaded = Utils.calculerSignature(tmpFile);
 			
 			double distance = 0;
-			float distance2 = 0;
+			double distance2 = 0;
 			Iterator<Signatures> signatures = SignatureRepository
 					.getAllSignatures().iterator();
-
+			ltw.clear();
 			while (signatures.hasNext()) {
 
 				Signatures sigFromDB = signatures.next();
 				distance = (Utils.calculerDistanceEuclidienne(sigUploaded, sigFromDB))   ;
-				System.out.println(sigUploaded.toString());
+				 
 				System.out.println("la distance est de : " + distance);
-				if (distance <= 5) {
+				if (distance <= 0.2) {
 					 
-					ltw.add(Utils.encodeForWeb(sigFromDB.getImage()) );
+					ltw.add(Utils.encodeForWeb( sigFromDB.getImage(),distance ));
 				}
-/*
+ 
 				  
 				   Signature sig2Uploaded=new Signature(sigUploaded.getTabRG(),sigUploaded.getTabBY(),sigUploaded.getTabWB());
-				   sig2Uploaded.affiche(); while (signatures.hasNext()) {
+				    
+				   ltw2.clear();
+				   while (signatures.hasNext()) {
 				    
 				    Signatures s2 = signatures.next(); 
 				    Signature sig2fromDB=new  Signature(s2.getTabRG(),s2.getTabBY(),s2.getTabRG());
 				   
-				   distance2=Controleur.calculerDeSimilarite(sig2Uploaded,
-				   sig2fromDB) ; System.out.println("la distance est de" +
+				   distance2=Controleur.calculerDeSimilarite(sig2Uploaded,sig2fromDB) ; 
+				   
+				   System.out.println("la distance est de" +
 				   distance);
 				   if (distance2 <= 0.5 ) {
 				   
 				   
-				   String encoded=Base64.encode(s2.getImage().getFichier());
-				   String encodedString = new String(encoded);
+				    
 				   
-				   ListToWeb imgToWeb=new
-				   ListToWeb(s2.getImage().getId(),s2.getImage
-				   ().getName(),encodedString);
-				   
-				   
-				   
-				  // ltw2.add(imgToWeb); }} //
-				*/  
+				 ltw2.add(Utils.encodeForWeb(s2.getImage(),distance2) );
+				 
+				   }} //
+				 
 			}
 
 			/*
@@ -146,8 +144,9 @@ public class RechercheImage extends HttpServlet {
 			// request.getRequestDispatcher("/success.jsp").forward(request,
 			// response);
 			//
-			// request.setAttribute("images2", ltw2);
+			  request.setAttribute("images2", ltw2);
 			request.setAttribute("images", ltw);
+		 request.setAttribute("uploadedImg", imgW);
 			RequestDispatcher requestDispatcher;
 			requestDispatcher = request
 					.getRequestDispatcher("/result_search.jsp");

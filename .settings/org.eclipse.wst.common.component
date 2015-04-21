@@ -2,9 +2,6 @@
     <wb-module deploy-name="imagesHib">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <dependent-module archiveName="Projet_IP9.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Projet_IP9/Projet_IP9">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="imagesHib"/>
         <property name="java-output-path" value="/imagesHib/build/classes"/>
     </wb-module>

@@ -4,12 +4,14 @@ public class ImageForWeb {
 	private Long id;
 	private String name;
 	private String image;
-	public ImageForWeb(Long id, String name, String image) {
+	private double distance;
+	public ImageForWeb(String name, String image, double distance) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.image = image;
+		this.distance = distance;
 	}
+	 
 	public ImageForWeb() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -31,6 +33,12 @@ public class ImageForWeb {
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public double getDistance() {
+		return distance;
+	}
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 	
 

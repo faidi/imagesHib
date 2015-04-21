@@ -152,13 +152,13 @@ public class Utils {
 
 	}
 
-public static   ImageForWeb encodeForWeb(Image img){
+public static   ImageForWeb encodeForWeb(Image img,double dist){
 	
 	String encoded = Base64.encode(img.getFichier());
 	String encodedString = new String(encoded);
 
-	ImageForWeb imgToWeb = new ImageForWeb(img.getId(),  
-			img.getName(), encodedString);
+	ImageForWeb imgToWeb = new ImageForWeb(img.getName(),  
+			   encodedString,dist);
 
 	
 	return imgToWeb;
